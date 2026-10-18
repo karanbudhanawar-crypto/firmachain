@@ -44,6 +44,25 @@ def dashboard():
 def health():
     return {"status": "ok", "service": "FirmaChain API", "gateway_mode": GATEWAY_MODE}
 
+
+@app.get("/api/hardware/status")
+def hardware_status(db: Session = Depends(get_db)):
+    """Report whether the expected physical ESP32-S3 has sent a recent USB-bridge report."""
+    device_id = "esp32-s3-usb-01"
+    device = db.get(Device, device_id)
+    now = datetime.now(timezone.utc)
+    if not device or not device.last_seen:
+        return {"connected": False, "device_id": device_id, "transport": "USB serial via host bridge",
+                "last_seen": None, "seconds_since_report": None, "device": None}
+    last_seen = device.last_seen
+    if last_seen.tzinfo is None:
+        last_seen = last_seen.replace(tzinfo=timezone.utc)
+    age = max(0, int((now - last_seen).total_seconds()))
+    online = age <= 45
+    return {"connected": online, "device_id": device_id, "transport": "USB serial via host bridge",
+            "last_seen": device.last_seen.isoformat(), "seconds_since_report": age,
+            "device": device_json(device)}
+
 @app.get("/api/devices")
 def devices(db: Session = Depends(get_db)):
     rows = db.scalars(select(Device).order_by(Device.id)).all()
