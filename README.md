@@ -33,28 +33,23 @@ uvicorn app.main:app --reload
 
 Open http://127.0.0.1:8000 for the dashboard and http://127.0.0.1:8000/docs for the API.
 
-## 3. Demonstrate the workflow
-In another terminal, run:
+## 3. Connect a physical ESP32-S3
+The dashboard now shows a device as online only when the backend receives a recent report from the USB bridge. A USB connection to the PC alone does not connect the board to the cloud.
 
-```bash
-python simulator/device_simulator.py --scenario approved
-python simulator/device_simulator.py --scenario mismatch
-python simulator/device_simulator.py --scenario revoked
-python simulator/device_simulator.py --scenario violation
-```
+1. Flash the firmware using the steps in `usb_bridge/README.md`.
+2. Connect the ESP32-S3 with a USB data cable and identify its COM port in Windows Device Manager.
+3. In a terminal, install the bridge dependency: `py -m pip install -r usb_bridge/requirements.txt`.
+4. Run `py usb_bridge/usb_bridge.py --url https://firmachain.onrender.com --port COM5`, replacing `COM5` with your actual port.
+5. Keep the bridge terminal open. The dashboard checks hardware status every five seconds; a recent report is considered online for 45 seconds.
 
-Refresh the dashboard after each run. The simulator uses the API and does not require a physical ESP32.
+For local development, the API can also be run using the steps above. Simulator scenarios remain available for isolated software tests, but they are not physical-device evidence.
 
-### Expected decisions
-- `approved`: normal access
-- `mismatch`: suspicious; alert and investigate
-- `revoked`: confirmed violation; isolate
-- `violation`: confirmed violation; isolate
-
-The initial sample device and firmware release are seeded automatically.
+### Security scope
+The API compares the reported firmware SHA-256 with registered releases and records decisions in the audit log. Unknown hashes require review and should only be approved after verifying the exact firmware build. Network isolation is still simulated, and serial reports are not hardware-backed remote attestation.
 
 ## 4. API overview
 - `GET /api/health`
+- `GET /api/hardware/status`
 - `GET /api/devices`
 - `POST /api/devices/register`
 - `POST /api/reports`
