@@ -58,3 +58,16 @@ $("refresh").onclick=loadAll;
 $("audit-refresh").onclick=async()=>{try{const a=await api("/api/audit");setText("audit-status",`${a.chain_valid?"Audit hash chain is valid":"Audit hash chain verification failed"} · ${a.count} entries`);toast(a.chain_valid?"Audit chain verified":"Audit chain verification failed");await loadAll();}catch(e){toast(e.message);}};
 $("release-form").addEventListener("submit",async e=>{e.preventDefault();const body=Object.fromEntries(new FormData(e.currentTarget).entries());try{await api("/api/releases",{method:"POST",body:JSON.stringify(body)});setText("release-msg","Firmware release registered.");toast("Release registered");e.currentTarget.reset();await loadAll();}catch(err){setText("release-msg",err.message);}});
 loadAll();setInterval(loadAll,5000);
+
+/* Search currently rendered registry, incidents and audit records without altering server data. */
+const globalSearch = $("global-search");
+if(globalSearch){
+  globalSearch.addEventListener("input",()=>{
+    const q=globalSearch.value.trim().toLowerCase();
+    document.querySelectorAll("#releases .release, #incidents .incident, #audit .audit-entry").forEach(card=>{
+      card.hidden=!!q&&!card.textContent.toLowerCase().includes(q);
+    });
+    const hw=$("hardware-panel");
+    if(hw)hw.classList.toggle("search-match",!!q&&hw.textContent.toLowerCase().includes(q));
+  });
+}
