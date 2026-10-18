@@ -35,7 +35,7 @@
   </section>
   <section class="metrics" aria-label="Live device metrics">
     <div class="metric"><div class="metric-icon blue">▦</div><div><span>Physical devices online</span><strong id="m-devices">0</strong><small>Based on recent hardware report</small></div></div>
-    <div class="metric"><div class="metric-icon red">⛨</div><div><span>Isolated devices</span><strong id="m-isolated">0</strong><small>Policy decision; enforcement simulated</small></div></div>
+    <div class="metric"><div class="metric-icon red">⛨</div><div><span>Isolated devices</span><strong id="m-isolated">0</strong><small>Policy decision; enforcement not configured</small></div></div>
     <div class="metric"><div class="metric-icon amber">⚠</div><div><span>Firmware alerts</span><strong id="m-suspicious">0</strong><small>Review integrity findings</small></div></div>
     <div class="metric"><div class="metric-icon green">✓</div><div><span>Audit chain</span><strong id="m-audit">Checking</strong><small>Hash-chain verification</small></div></div>
   </section>
@@ -52,12 +52,12 @@
   </section>
   <section class="grid lower">
     <div class="panel" id="incidents-panel"><div class="panel-head"><div><p class="eyebrow">THREAT MONITOR</p><h3>Recent device events</h3></div><span class="live-tag"><i></i> LIVE</span></div><div id="incidents" class="incident-list"><p class="empty-state">Waiting for device reports. Events will appear here when the ESP32 bridge sends data.</p></div></div>
-    <div class="panel" id="network-panel"><div class="panel-head"><div><p class="eyebrow">RESPONSE STATUS</p><h3>Network containment</h3></div><span class="status-badge amber-badge">Simulation mode</span></div>
+    <div class="panel" id="network-panel"><div class="panel-head"><div><p class="eyebrow">RESPONSE STATUS</p><h3>Network containment</h3></div><span class="status-badge amber-badge">Enforcement not configured</span></div>
       <div class="network-flow"><div class="network-node"><span>◎</span><strong>Cloud API</strong><small>HTTPS</small></div><div class="flow-line"><i></i></div><div class="network-node"><span>▣</span><strong>USB bridge</strong><small>Serial link</small></div><div class="flow-line"><i></i></div><div class="network-node"><span>⌘</span><strong>ESP32-S3</strong><small id="flow-device-state">Waiting</small></div></div>
       <div class="system-row"><span><i class="status-dot" id="api-dot"></i>Backend API</span><strong id="system-api">Checking…</strong></div>
       <div class="system-row"><span><i class="status-dot" id="db-dot"></i>Database</span><strong id="system-db">Checking…</strong></div>
       <div class="system-row"><span><i class="status-dot" id="audit-dot"></i>Audit chain</span><strong id="system-audit">Checking…</strong></div>
-      <p class="hint">Firmware decisions and event logging are active. Actual firewall/network blocking is not enabled by this deployment.</p>
+      <p class="hint">Firmware decisions and audit logging are active. Firewall enforcement is not configured in this deployment.</p>
     </div>
   </section>
   <section class="panel audit-panel" id="audit-panel"><div class="panel-head"><div><p class="eyebrow">TAMPER-EVIDENT RECORDS</p><h3>Security audit trail</h3></div><button class="secondary" id="audit-refresh">Verify chain</button></div><p id="audit-status" class="hint">Checking audit chain…</p><div id="audit" class="audit-list"><p class="empty-state">Audit records will appear here.</p></div></section>
