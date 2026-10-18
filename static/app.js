@@ -23,3 +23,23 @@ $("demo-revoked").onclick=async()=>{try{await api("/api/releases",{method:"POST"
 $("demo-violation").onclick=()=>simulate(VIOLATION_HASH,true,"Simulated confirmed security violation");
 $("release-form").addEventListener("submit",async e=>{e.preventDefault();const f=new FormData(e.currentTarget);const body=Object.fromEntries(f.entries());try{await api("/api/releases",{method:"POST",body:JSON.stringify(body)});$("release-msg").textContent="Release added to the prototype registry.";e.currentTarget.reset();toast("Release registered");loadAll()}catch(err){$("release-msg").textContent=err.message}});
 loadAll();setInterval(loadAll,15000);
+
+/* Supplementary status labels used by the redesigned console */
+async function syncConsoleStatus(){
+  try{
+    const [h,m,a]=await Promise.all([api("/api/health"),api("/api/metrics"),api("/api/audit")]);
+    const apiLabel=$("system-api"), dbLabel=$("system-db"), auditLabel=$("system-audit"), top=$("top-health");
+    if(apiLabel)apiLabel.textContent=h.status==="ok"?"Online":"Unavailable";
+    if(dbLabel)dbLabel.textContent="Connected";
+    if(auditLabel)auditLabel.textContent=a.chain_valid?"Valid":"Invalid";
+    if(top)top.textContent=h.status==="ok"?"Backend online":"Backend issue";
+  }catch(e){
+    const apiLabel=$("system-api"), dbLabel=$("system-db"), auditLabel=$("system-audit"), top=$("top-health");
+    if(apiLabel)apiLabel.textContent="Unavailable";
+    if(dbLabel)dbLabel.textContent="Unknown";
+    if(auditLabel)auditLabel.textContent="Unknown";
+    if(top)top.textContent="Backend unavailable";
+  }
+}
+syncConsoleStatus();
+setInterval(syncConsoleStatus,15000);
