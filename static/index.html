@@ -9,7 +9,7 @@
 <body class="ops-body">
 <header class="topbar">
   <a class="brand" href="/" aria-label="FirmaChain home"><div class="mark">FC</div><div><h1>FirmaChain</h1><p>IoT Firmware Integrity &amp; Response</p></div></a>
-  <div class="top-search"><span>⌕</span><span>Device security operations</span></div>
+  <label class="top-search" for="global-search"><span>⌕</span><input id="global-search" type="search" placeholder="Search firmware, events, hashes…" autocomplete="off"></label>
   <div class="header-right"><span class="live-dot"></span><span id="top-health">Checking backend</span><button id="refresh">Refresh status</button></div>
 </header>
 <div class="app-shell">
@@ -28,7 +28,7 @@
 <main id="overview">
   <section class="hero">
     <div class="hero-copy"><p class="eyebrow">IOT SECURITY OPERATIONS / LIVE</p><h2>Protect IoT devices.<br><span>Detect firmware threats.</span></h2><p class="sub">Monitor ESP32-S3 firmware measurements, review trust decisions, and inspect a verifiable audit trail.</p>
-      <div class="hero-actions"><a class="primary-link" href="#hardware-panel">⌁ &nbsp; Device connection</a><a class="secondary-link" href="#registry-panel">⬡ &nbsp; Verify firmware</a></div>
+      <div class="hero-actions"><a class="primary-link" href="#hardware-panel">⌁ &nbsp; Device connection</a><a class="secondary-link" href="#registry-panel">⬡ &nbsp; Verify firmware</a><a class="secondary-link" href="/api/export/security-report.csv">↓ &nbsp; Export report</a></div>
     </div>
     <div class="hero-art" aria-hidden="true"><div class="cyber-grid"></div><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="chip-graphic"><span>ESP32-S3</span><i></i></div><div class="shield-graphic"><b>✓</b></div><span class="art-label label-left">SHA-256</span><span class="art-label label-right">TRUST CHECK</span></div>
     <div class="hero-chip"><span class="pulse" id="hardware-pulse"></span><div><strong id="hero-device-state">Waiting for device</strong><small id="hero-device-sub">Connect ESP32 through the USB bridge</small></div></div>
@@ -44,7 +44,7 @@
       <div class="panel-head"><div><p class="eyebrow">HARDWARE CONNECTION</p><h3>ESP32-S3 device</h3></div><span class="status-badge" id="hardware-badge">Not connected</span></div>
       <div class="hardware-status"><div class="hardware-icon"><span>ESP</span><b>32</b></div><div class="hardware-info"><strong id="device-name">esp32-s3-usb-01</strong><span id="device-transport">USB serial via host bridge</span><span id="device-last-seen">No report received yet</span></div><div class="connection-state"><i id="connection-dot"></i><strong id="connection-label">OFFLINE</strong></div></div>
       <div class="device-details"><div><span>Firmware version</span><strong id="device-firmware">—</strong></div><div><span>Firmware SHA-256</span><code id="device-hash">Waiting for report</code></div><div><span>Integrity decision</span><strong id="device-decision">Awaiting firmware report</strong></div></div>
-      <p class="hint">Connect the board and keep <code>usb_bridge.py</code> running on the connected computer. The bridge forwards signed-in-by-transport reports to this cloud service; this is not hardware-backed attestation.</p>
+      <p class="hint">Connect the board and keep <code>usb_bridge.py</code> running on the connected computer. The bridge forwards device reports to this cloud service; reports are not hardware-backed attestation.</p>
     </div>
     <div class="panel" id="registry-panel"><div class="panel-head"><div><p class="eyebrow">TRUST REGISTRY</p><h3>Approved firmware</h3></div><span class="small-count" id="release-count">— releases</span></div><div id="releases" class="release-list">Loading registry…</div>
       <form id="release-form" class="form"><h4>Register firmware release</h4><label>Release ID<input name="release_id" required value="release-1.1.0"></label><label>Version<input name="version" required value="1.1.0"></label><label>SHA-256 hash<input name="sha256" required minlength="64" maxlength="64" pattern="[a-fA-F0-9]{64}" placeholder="Paste 64-character firmware hash"></label><label>Notes<input name="notes" value="Approved firmware build"></label><button type="submit">Register release</button><p id="release-msg" class="hint"></p></form>
