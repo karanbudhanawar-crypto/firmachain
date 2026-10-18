@@ -1,7 +1,7 @@
-import json, time, uuid, hashlib
+import json, time, uuid, hashlib, csv, io
 from datetime import datetime, timezone
 from fastapi import FastAPI, Depends, HTTPException
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, Response
 from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import Session
 from sqlalchemy import select, func
@@ -44,6 +44,33 @@ def dashboard():
 def health():
     return {"status": "ok", "service": "FirmaChain API", "gateway_mode": GATEWAY_MODE}
 
+
+
+@app.get("/api/export/security-report.csv")
+def export_security_report(db: Session = Depends(get_db)):
+    """Download a real CSV snapshot of current devices, releases, incidents, and audit verification."""
+    output = io.StringIO()
+    writer = csv.writer(output)
+    writer.writerow(["section", "id", "timestamp", "name_or_type", "status_or_decision", "details_or_hash"])
+    for d in db.scalars(select(Device).order_by(Device.id)).all():
+        writer.writerow(["device", d.id, d.last_seen.isoformat() if d.last_seen else "",
+                         d.name, f"{d.status}/{d.network_state}/{d.last_decision}",
+                         f"firmware={d.firmware_version}; sha256={d.reported_hash}"])
+    for r in db.scalars(select(Release).order_by(Release.created_at.desc())).all():
+        writer.writerow(["release", r.id, r.created_at.isoformat() if r.created_at else "",
+                         r.version, "revoked" if r.revoked else "approved" if r.approved else "pending",
+                         r.sha256])
+    for incident in db.scalars(select(Incident).order_by(Incident.id.desc()).limit(500)).all():
+        writer.writerow(["incident", incident.device_id, incident.created_at.isoformat() if incident.created_at else "",
+                         incident.event_type, incident.severity, incident.details])
+    entries = db.scalars(select(AuditEntry).order_by(AuditEntry.id).limit(5000)).all()
+    writer.writerow(["audit_summary", "", datetime.now(timezone.utc).isoformat(), "hash_chain",
+                     "valid" if verify_audit_chain(entries) else "invalid", f"{len(entries)} entries"])
+    for entry in entries:
+        writer.writerow(["audit", entry.id, entry.created_at.isoformat() if entry.created_at else "",
+                         entry.event_type, entry.entry_hash, entry.payload_json])
+    return Response(content=output.getvalue(), media_type="text/csv; charset=utf-8",
+                     headers={"Content-Disposition": "attachment; filename=firmachain-security-report.csv"})
 
 @app.get("/api/hardware/status")
 def hardware_status(db: Session = Depends(get_db)):
