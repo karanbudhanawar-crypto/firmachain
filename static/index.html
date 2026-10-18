@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FirmaChain Security Console</title><link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+<header><div class="brand"><div class="mark">FC</div><div><h1>FirmaChain</h1><p>IoT Firmware Integrity & Response</p></div></div><div class="header-right"><span class="live-dot"></span> Prototype console <button id="refresh">Refresh</button></div></header>
+<main>
+<section class="hero"><div><p class="eyebrow">SECURITY OVERVIEW</p><h2>Protect devices. Verify firmware.<br><span>Contain incidents.</span></h2><p class="sub">A development dashboard for firmware integrity verification, auditable events, network isolation simulation, and safe recovery.</p></div><div class="hero-chip"><span class="pulse"></span><div><strong id="health">Connecting…</strong><small>Backend status</small></div></div></section>
+<section class="metrics">
+<div class="metric"><span>Registered devices</span><strong id="m-devices">—</strong><small>Known to the controller</small></div>
+<div class="metric"><span>Isolated devices</span><strong id="m-isolated">—</strong><small>Gateway action simulated</small></div>
+<div class="metric"><span>Suspicious devices</span><strong id="m-suspicious">—</strong><small>Require investigation</small></div>
+<div class="metric"><span>Audit chain</span><strong id="m-audit">—</strong><small>Hash-chain validation</small></div>
+</section>
+<section class="grid">
+<div class="panel"><div class="panel-head"><div><p class="eyebrow">INVENTORY</p><h3>Connected devices</h3></div><button class="secondary" id="demo-approved">Simulate approved</button></div><div class="table-wrap"><table><thead><tr><th>Device</th><th>Firmware</th><th>Status</th><th>Network</th><th>Decision</th></tr></thead><tbody id="devices"><tr><td colspan="5">Loading devices…</td></tr></tbody></table></div><div class="actions"><button class="secondary" id="demo-mismatch">Simulate mismatch</button><button class="danger" id="demo-revoked">Simulate revoked firmware</button><button class="danger" id="demo-violation">Simulate violation</button></div><p class="hint">Demo buttons submit simulated device reports. No firewall rules are changed.</p></div>
+<div class="panel"><div class="panel-head"><div><p class="eyebrow">TRUST REGISTRY</p><h3>Approved releases</h3></div></div><div id="releases" class="release-list">Loading releases…</div><form id="release-form" class="form"><h4>Register approved release</h4><label>Release ID<input name="release_id" required value="release-demo-2"></label><label>Version<input name="version" required value="1.1.0"></label><label>SHA-256 hash (64 hex characters)<input name="sha256" required minlength="64" maxlength="64" pattern="[a-fA-F0-9]{64}" placeholder="64-character SHA-256"></label><label>Notes<input name="notes" value="Demo release"></label><button type="submit">Add release</button><p id="release-msg" class="hint"></p></form></div>
+</section>
+<section class="grid lower">
+<div class="panel"><div class="panel-head"><div><p class="eyebrow">INCIDENT RESPONSE</p><h3>Recent incidents</h3></div></div><div id="incidents" class="incident-list">Loading incidents…</div></div>
+<div class="panel"><div class="panel-head"><div><p class="eyebrow">AUDITABILITY</p><h3>Security audit trail</h3></div><button class="secondary" id="audit-refresh">Verify chain</button></div><p id="audit-status" class="hint">Checking audit chain…</p><div id="audit" class="audit-list"></div></div>
+</section>
+<footer><span>FirmaChain · Academic prototype</span><span>Default mode: safe simulation · API docs: <a href="/docs">/docs</a></span></footer>
+</main><div id="toast" role="status"></div><script src="/static/app.js"></script>
+</body></html>

@@ -1,0 +1,23 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: firmachain
+      POSTGRES_USER: firmachain
+      POSTGRES_PASSWORD: firmachain_dev_only
+    ports:
+      - "5433:5432"
+    volumes:
+      - firmachain_pgdata:/var/lib/postgresql/data
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql+psycopg://firmachain:firmachain_dev_only@db:5432/firmachain
+      GATEWAY_MODE: simulation
+      ALLOW_FIREWALL_CHANGES: "false"
+    depends_on:
+      - db
+volumes:
+  firmachain_pgdata:

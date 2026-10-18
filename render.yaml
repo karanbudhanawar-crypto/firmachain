@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: firmachain
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /api/health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.8
+      - key: GATEWAY_MODE
+        value: simulation
+      - key: ALLOW_FIREWALL_CHANGES
+        value: "false"
+      - key: DATABASE_URL
+        fromDatabase:
+          name: firmachain-db
+          property: connectionString
+databases:
+  - name: firmachain-db
+    plan: free
+    databaseName: firmachain
+    user: firmachain
