@@ -15,7 +15,7 @@ from gateway.nftables_adapter import isolate_device
 
 DEMO_HASH = hashlib.sha256(b"firmachain-demo-approved-firmware-v1").hexdigest()
 app = FastAPI(title="FirmaChain API", version="0.1.0",
-              description="Development prototype for firmware integrity verification and network isolation.")
+              description="Firmware integrity monitoring for ESP32-S3 devices with release verification and audit logging.")
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 def seed():
@@ -24,7 +24,7 @@ def seed():
     try:
         if not db.get(Release, "release-1.0.0"):
             db.add(Release(id="release-1.0.0", version="1.0.0", sha256=DEMO_HASH,
-                           approved=True, revoked=False, notes="Seeded demonstration release"))
+                           approved=True, revoked=False, notes="Initial registry release record"))
             append_audit(db, "release_approved", {"release_id": "release-1.0.0", "version": "1.0.0", "sha256": DEMO_HASH})
             db.commit()
         save_policy({"mode": "cached", "allowed_hashes": [DEMO_HASH], "isolated_devices": []})
