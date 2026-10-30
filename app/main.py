@@ -1,6 +1,6 @@
-import json, time, uuid, hashlib, csv, io
+import json, time, uuid, hashlib, csv, io, hmac
 from datetime import datetime, timezone
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import FastAPI, Depends, HTTPException, Header
 from fastapi.responses import HTMLResponse, Response
 from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import Session
@@ -9,7 +9,7 @@ from app.db import Base, engine, get_db, SessionLocal
 from app.models import Device, Release, Incident, AuditEntry
 from app.schemas import DeviceRegistration, DeviceReport, ReleaseCreate, RecoveryCheck
 from app.audit import append_audit, verify_audit_chain
-from app.config import GATEWAY_MODE
+from app.config import GATEWAY_MODE, FIRMWARE_ADMIN_TOKEN
 from gateway.policy_cache import save_policy, load_policy
 from gateway.nftables_adapter import isolate_device
 
@@ -122,8 +122,30 @@ def releases(db: Session = Depends(get_db)):
     return [{"id": r.id, "version": r.version, "sha256": r.sha256,
              "approved": r.approved, "revoked": r.revoked, "notes": r.notes} for r in rows]
 
+def require_admin_token(authorization: str | None = Header(default=None)) -> None:
+    """Fail closed unless firmware registry mutations carry the configured admin bearer token."""
+    if not FIRMWARE_ADMIN_TOKEN:
+        raise HTTPException(
+            status_code=503,
+            detail="Firmware administration is disabled; configure FIRMWARE_ADMIN_TOKEN in the service environment.",
+        )
+    scheme, _, supplied_token = (authorization or "").partition(" ")
+    if scheme.lower() != "bearer" or not supplied_token or not hmac.compare_digest(
+        supplied_token, FIRMWARE_ADMIN_TOKEN
+    ):
+        raise HTTPException(
+            status_code=401,
+            detail="A valid administrator bearer token is required.",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+
+
 @app.post("/api/releases")
-def create_release(body: ReleaseCreate, db: Session = Depends(get_db)):
+def create_release(
+    body: ReleaseCreate,
+    db: Session = Depends(get_db),
+    _admin: None = Depends(require_admin_token),
+):
     if db.get(Release, body.release_id):
         raise HTTPException(409, "Release ID already exists")
     row = Release(id=body.release_id, version=body.version, sha256=body.sha256.lower(),
@@ -135,7 +157,11 @@ def create_release(body: ReleaseCreate, db: Session = Depends(get_db)):
     return {"ok": True, "release_id": row.id}
 
 @app.post("/api/releases/{release_id}/revoke")
-def revoke_release(release_id: str, db: Session = Depends(get_db)):
+def revoke_release(
+    release_id: str,
+    db: Session = Depends(get_db),
+    _admin: None = Depends(require_admin_token),
+):
     row = db.get(Release, release_id)
     if not row:
         raise HTTPException(404, "Release not found")
@@ -156,9 +182,12 @@ def refresh_policy(db):
 def report(body: DeviceReport, db: Session = Depends(get_db)):
     started = time.perf_counter()
     device = db.get(Device, body.device_id)
+    previous_status = device.status if device else None
+    previous_hash = (device.reported_hash or "").lower() if device else ""
     if not device:
         device = Device(id=body.device_id, name=body.device_id)
         db.add(device)
+    alert_suppressed = False
     device.firmware_version = body.firmware_version
     device.reported_hash = body.firmware_hash.lower()
     device.last_seen = datetime.now(timezone.utc)
@@ -189,15 +218,23 @@ def report(body: DeviceReport, db: Session = Depends(get_db)):
         decision, status = "investigate", "suspicious"
         device.status = status
         device.last_decision = decision
-        incident = Incident(device_id=device.id, severity="medium", event_type="firmware_mismatch",
-                            details=body.note or "Firmware hash does not match an approved release")
-        db.add(incident)
+        # Reports arrive repeatedly. Create an incident only when this device first
+        # enters mismatch state or its reported hash changes; keep last_seen updated.
+        alert_suppressed = (
+            previous_status == "suspicious"
+            and previous_hash == body.firmware_hash.lower()
+        )
+        if not alert_suppressed:
+            incident = Incident(device_id=device.id, severity="medium", event_type="firmware_mismatch",
+                                details=body.note or "Firmware hash does not match an approved release")
+            db.add(incident)
+            append_audit(db, "firmware_mismatch", {"device_id": device.id, "sha256": body.firmware_hash.lower()})
         gateway_result = {"mode": "simulation", "applied": False, "message": "Suspicious device flagged for investigation; no firewall rules changed."}
-        append_audit(db, "firmware_mismatch", {"device_id": device.id, "sha256": body.firmware_hash.lower()})
     db.commit()
     elapsed_ms = round((time.perf_counter() - started) * 1000, 3)
     return {"device_id": device.id, "decision": decision, "status": device.status,
             "network_state": device.network_state, "gateway": gateway_result,
+            "alert_suppressed": alert_suppressed,
             "verification_latency_ms": elapsed_ms}
 
 @app.get("/api/incidents")
