@@ -45,7 +45,20 @@ The dashboard now shows a device as online only when the backend receives a rece
 For local development, the API can also be run using the steps above. Simulator scenarios remain available for isolated software tests, but they are not physical-device evidence.
 
 ### Security scope
-The API compares the reported firmware SHA-256 with registered releases and records decisions in the audit log. Unknown hashes require review and should only be approved after verifying the exact firmware build. Network isolation is still simulated, and serial reports are not hardware-backed remote attestation.
+The API compares the reported firmware SHA-256 with registered releases and records decisions in the audit log. Unknown hashes require review. Firmware release creation and revocation require an administrator bearer token; if `FIRMWARE_ADMIN_TOKEN` is unset, these operations fail closed with HTTP 503, and invalid/missing tokens receive HTTP 401. Repeated reports from a device already marked suspicious with the same hash update its last-seen time but do not create another mismatch incident or audit entry. A changed hash or a new mismatch state creates a new incident.
+
+Network isolation is still simulated, and serial reports are not hardware-backed remote attestation.
+
+### Configure firmware registry administration
+1. Generate a high-entropy token locally. In PowerShell, run:
+   ```powershell
+   py -c "import secrets; print(secrets.token_hex(32))"
+   ```
+2. In the Render dashboard, open the `firmachain` service → **Environment** and add `FIRMWARE_ADMIN_TOKEN` with the generated value. Save the change so Render restarts the service.
+3. Do not commit the token to Git, put it in frontend source, or share it in screenshots. The dashboard asks for it when you register or revoke a release; it is held only in that page's memory until it is refreshed.
+4. Before registering a release, verify the digest against the exact firmware artifact you built and intend to trust. Registration approves that hash. Revocation also requires the token.
+
+If the token is not configured on Render, the dashboard will report that firmware administration is disabled. Device reporting and read-only dashboard operations continue to work.
 
 ## 4. API overview
 - `GET /api/health`
