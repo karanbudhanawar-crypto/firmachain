@@ -11,6 +11,8 @@ services:
         value: 3.12.8
       - key: GATEWAY_MODE
         value: simulation
+      - key: FIRMWARE_ADMIN_TOKEN
+        sync: false
       - key: ALLOW_FIREWALL_CHANGES
         value: "false"
       - key: DATABASE_URL
