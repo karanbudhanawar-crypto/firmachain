@@ -2,10 +2,11 @@
 setlocal
 title FirmaChain - Automatic ESP32-S3 USB Bridge
 
-set "PROJECT_DIR=%USERPROFILE%\Downloads\FirmaChain"
-set "BRIDGE_DIR=%PROJECT_DIR%\usb_bridge"
-set "BRIDGE_SCRIPT=%BRIDGE_DIR%\usb_bridge.py"
-set "REQUIREMENTS=%BRIDGE_DIR%\requirements.txt"
+rem The launcher can be placed in any folder; bridge files are fetched into a sibling folder.
+set "PROJECT_DIR=%~dp0"
+set "BRIDGE_DIR=%PROJECT_DIR%usb_bridge"
+set "BRIDGE_SCRIPT=%BRIDGE_DIR%usb_bridge.py"
+set "REQUIREMENTS=%BRIDGE_DIR%requirements.txt"
 
 echo.
 echo  ==============================================
@@ -13,20 +14,19 @@ echo       FirmaChain - ESP32-S3 Auto Connector
 echo  ==============================================
 echo.
 
-if not exist "%BRIDGE_SCRIPT%" (
-    echo ERROR: FirmaChain USB bridge was not found:
-    echo   %BRIDGE_SCRIPT%
-    echo.
-    echo Make sure the repository is downloaded to:
-    echo   %PROJECT_DIR%
-    echo.
+if not exist "%BRIDGE_DIR%" mkdir "%BRIDGE_DIR%"
+
+echo Downloading the latest FirmaChain USB bridge...
+powershell -NoProfile -ExecutionPolicy Bypass -Command "Invoke-WebRequest -UseBasicParsing -Uri 'https://raw.githubusercontent.com/karanbudhanawar-crypto/firmachain/main/usb_bridge/usb_bridge.py' -OutFile '%BRIDGE_SCRIPT%'"
+if errorlevel 1 (
+    echo ERROR: Could not download usb_bridge.py. Check your internet connection.
     pause
     exit /b 1
 )
 
-cd /d "%PROJECT_DIR%"
+powershell -NoProfile -ExecutionPolicy Bypass -Command "Invoke-WebRequest -UseBasicParsing -Uri 'https://raw.githubusercontent.com/karanbudhanawar-crypto/firmachain/main/usb_bridge/requirements.txt' -OutFile '%REQUIREMENTS%'"
 if errorlevel 1 (
-    echo ERROR: Cannot open the FirmaChain project folder.
+    echo ERROR: Could not download bridge requirements.
     pause
     exit /b 1
 )
@@ -42,9 +42,10 @@ if errorlevel 1 (
     )
 )
 
+echo.
 echo Starting automatic ESP32-S3 detection...
-echo Keep this window open while using the dashboard.
-echo Unplugging the board is safe; the bridge will keep waiting.
+echo Unplugging the board is safe; the bridge will wait and reconnect.
+echo Keep this window open while using the cloud dashboard.
 echo Press Ctrl+C to stop the bridge.
 echo.
 
