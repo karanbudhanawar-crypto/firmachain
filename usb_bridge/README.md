@@ -29,17 +29,19 @@ py -m pip install -r requirements.txt
 py -m serial.tools.list_ports
 ```
 
-## 4. Run the bridge
+## 4. Run the bridge with automatic reconnect
 
 ```cmd
-py usb_bridge.py --url https://firmachain.onrender.com --port COM5
+py usb_bridge.py --url https://firmachain.onrender.com --port auto
 ```
 
-Keep this process running. Each JSON report is forwarded to `POST /api/reports`. Open the public dashboard and look for device `esp32-s3-usb-01`.
+The bridge auto-detects the ESP32-S3 USB Serial/JTAG interface (Espressif VID `303A`, PID `1001`). Keep this process running. If you unplug the board, the bridge waits; when you reconnect it—even if Windows assigns a different COM number—the bridge opens the detected port and resumes forwarding JSON reports to `POST /api/reports`.
+
+To pin a specific port instead, use `--port COM8` (replace with the port shown by Windows). In fixed-port mode, Windows must reuse that same COM number after reconnect.
 
 ## Important limitations
 
-- This is a USB-to-cloud prototype: the board communicates with the PC over USB; the PC forwards reports to Render over HTTPS. USB alone cannot reach the cloud.
+- This is a USB-to-cloud prototype: the board communicates with the PC over USB; the PC forwards reports to Render over HTTPS. USB alone cannot reach the cloud. The bridge process and PC must remain running/online for automatic reconnect and forwarding.
 - The firmware hash is a running-partition measurement, but a report sent by firmware is not proof against a compromised device. This is not secure remote attestation.
 - The running image hash will likely be new to the server's release registry. The dashboard may mark it `investigate` until the exact measured hash is added as an approved release. Approve only firmware you built and trust.
 - Network isolation remains simulated in this prototype. The API's response explicitly says no firewall rules changed.
