@@ -1,7 +1,22 @@
 const $ = (id) => document.getElementById(id);
 function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
 function pill(value){const s=String(value||"unknown").toLowerCase();return `<span class="pill ${esc(s)}">${esc(value||"unknown")}</span>`;}
-async function api(path,options={}){const r=await fetch(path,{headers:{"Content-Type":"application/json",...(options.headers||{})},...options});const data=await r.json().catch(()=>({detail:r.statusText}));if(!r.ok)throw new Error(data.detail||"Request failed");return data;}
+let adminToken = "";
+async function api(path,options={}){
+ const {headers={},...rest}=options;
+ const r=await fetch(path,{...rest,headers:{"Content-Type":"application/json",...headers}});
+ const data=await r.json().catch(()=>({detail:r.statusText}));
+ if(!r.ok){const error=new Error(data.detail||"Request failed");error.status=r.status;throw error;}
+ return data;
+}
+function adminAuthHeaders(){
+ if(!adminToken){
+  const entered=window.prompt("Enter the FirmaChain administrator token configured in the Render environment.");
+  if(!entered)throw new Error("Administrator token is required for firmware registry changes.");
+  adminToken=entered.trim();
+ }
+ return {"Authorization":`Bearer ${adminToken}`};
+}
 function toast(msg){const t=$("toast");t.textContent=msg;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),3500);}
 function setText(id,value){const el=$(id);if(el)el.textContent=value;}
 function setDot(id,ok){const el=$(id);if(el)el.classList.toggle("is-offline",!ok);}
@@ -51,12 +66,12 @@ async function loadAll(){
   $("releases").innerHTML=trustedReleases.length?trustedReleases.map(r=>`<div class="release"><div class="release-top"><strong>${esc(r.version)} · ${esc(r.id)}</strong>${pill(r.revoked?"revoked":r.approved?"approved":"pending")}</div><code>${esc(r.sha256)}</code><small>${esc(r.notes||"")}</small>${!r.revoked?`<div class="release-actions"><button class="danger revoke" data-id="${esc(r.id)}">Revoke release</button></div>`:""}</div>`).join(""):"<p class='empty-state'>No firmware releases registered yet.</p>";
   $("incidents").innerHTML=incidents.filter(i=>i.device_id==="esp32-s3-usb-01").slice(0,10).map(i=>`<div class="incident"><div class="incident-top"><strong>${esc(String(i.event_type).replaceAll("_"," "))}</strong>${pill(i.severity)}</div><small>${esc(formatDate(i.created_at))}</small><p>${esc(i.details)}</p></div>`).join("")||'<p class="empty-state">No hardware incidents recorded. Connect the ESP32 and send a firmware report to begin monitoring.</p>';
   $("audit").innerHTML=audit.entries.slice(-6).reverse().map(a=>`<div class="audit-entry"><div class="event">${esc(String(a.event_type).replaceAll("_"," "))}</div><div class="meta">Entry #${a.id} · ${esc(formatDate(a.created_at))}</div><code>${esc(a.entry_hash)}</code></div>`).join("")||'<p class="empty-state">No audit entries available.</p>';
-  document.querySelectorAll(".revoke").forEach(b=>b.addEventListener("click",async()=>{if(!confirm("Revoke firmware release "+b.dataset.id+"?"))return;try{await api("/api/releases/"+encodeURIComponent(b.dataset.id)+"/revoke",{method:"POST"});toast("Release revoked");await loadAll();}catch(e){toast(e.message);}}));
+  document.querySelectorAll(".revoke").forEach(b=>b.addEventListener("click",async()=>{if(!confirm("Revoke firmware release "+b.dataset.id+"?"))return;try{await api("/api/releases/"+encodeURIComponent(b.dataset.id)+"/revoke",{method:"POST",headers:adminAuthHeaders()});toast("Release revoked");await loadAll();}catch(e){if(e.status===401)adminToken="";toast(e.status===503?"Set FIRMWARE_ADMIN_TOKEN in the Render environment before changing releases.":e.message);}}));
  }catch(e){setText("top-health","Backend unavailable");setText("health","Backend unavailable");setText("system-api","Unavailable");toast(e.message);}
 }
 $("refresh").onclick=loadAll;
 $("audit-refresh").onclick=async()=>{try{const a=await api("/api/audit");setText("audit-status",`${a.chain_valid?"Audit hash chain is valid":"Audit hash chain verification failed"} · ${a.count} entries`);toast(a.chain_valid?"Audit chain verified":"Audit chain verification failed");await loadAll();}catch(e){toast(e.message);}};
-$("release-form").addEventListener("submit",async e=>{e.preventDefault();const body=Object.fromEntries(new FormData(e.currentTarget).entries());try{await api("/api/releases",{method:"POST",body:JSON.stringify(body)});setText("release-msg","Firmware release registered.");toast("Release registered");e.currentTarget.reset();await loadAll();}catch(err){setText("release-msg",err.message);}});
+$("release-form").addEventListener("submit",async e=>{e.preventDefault();const body=Object.fromEntries(new FormData(e.currentTarget).entries());try{await api("/api/releases",{method:"POST",headers:adminAuthHeaders(),body:JSON.stringify(body)});setText("release-msg","Firmware release approved and registered.");toast("Release registered");e.currentTarget.reset();await loadAll();}catch(err){if(err.status===401)adminToken="";setText("release-msg",err.status===503?"Set FIRMWARE_ADMIN_TOKEN in the Render environment before changing releases.":err.message);}});
 loadAll();setInterval(loadAll,5000);
 
 /* Search currently rendered registry, incidents and audit records without altering server data. */
