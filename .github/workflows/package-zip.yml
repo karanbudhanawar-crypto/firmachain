@@ -1,0 +1,26 @@
+name: Build FirmaChain project ZIP
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Create source archive
+        run: |
+          mkdir -p dist
+          git archive --format=zip --prefix=FirmaChain/ HEAD -o dist/FirmaChain-project.zip
+      - name: Upload ZIP artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: firmachain-project-zip
+          path: dist/FirmaChain-project.zip
+          if-no-files-found: error
+          retention-days: 14
