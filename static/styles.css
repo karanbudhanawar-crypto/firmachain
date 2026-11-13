@@ -185,3 +185,48 @@ footer{margin-top:8px;padding:7px 2px;font-size:8px}
 .sidebar .nav-item[aria-current="page"] .nav-icon {
   color: #4bdcff;
 }
+
+/* Final focused-page layout: top-aligned, full-width content */
+.app-shell main {
+  margin: 0;
+  align-self: stretch;
+  justify-self: stretch;
+}
+.app-shell main[data-current-view]:not([data-current-view="overview"]) {
+  min-height: calc(100vh - 50px);
+  padding: 14px 12px 18px;
+}
+#overview[data-current-view]:not([data-current-view="overview"]) .grid {
+  display: grid;
+  width: 100%;
+  max-width: none;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+  margin: 0 0 10px;
+  align-self: start;
+}
+#overview[data-current-view]:not([data-current-view="overview"]) .grid > .panel,
+#overview[data-current-view]:not([data-current-view="overview"]) > .panel {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 14px 16px;
+  border-radius: 11px;
+}
+#overview[data-current-view]:not([data-current-view="overview"]) .panel-head {
+  margin-bottom: 10px;
+}
+#overview[data-current-view]:not([data-current-view="overview"]) footer {
+  margin-top: 10px;
+  padding-top: 9px;
+}
+@media (max-width: 760px) {
+  .app-shell main[data-current-view]:not([data-current-view="overview"]) {
+    min-height: calc(100vh - 50px);
+    padding: 10px 8px 14px;
+  }
+  #overview[data-current-view]:not([data-current-view="overview"]) .grid > .panel,
+  #overview[data-current-view]:not([data-current-view="overview"]) > .panel {
+    padding: 12px;
+  }
+}
