@@ -24,7 +24,7 @@ function formatDate(value){if(!value)return "No report received yet";const d=new
 function renderDevice(hw){
  const d=hw.device;
  const online=!!hw.connected;
- setText("top-health",online?"ESP32-S3 connected":"Waiting for ESP32-S3");
+ setText("top-health",online?"ESP32-S3 Online":"ESP32-S3 Offline");
  setText("health",online?"Hardware connected":"Waiting for device");
  setText("hero-device-state",online?"ESP32-S3 online":"Waiting for device");
  setText("hero-device-sub",online?"Recent firmware report received":"Connect board and start USB bridge");
