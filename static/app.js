@@ -86,3 +86,86 @@ if(globalSearch){
     if(hw)hw.classList.toggle("search-match",!!q&&hw.textContent.toLowerCase().includes(q));
   });
 }
+
+
+/* Focused navigation: each sidebar option opens its own dashboard view. */
+const viewByHash = {
+  "#overview": "overview",
+  "#hardware-panel": "device",
+  "#registry-panel": "firmware",
+  "#incidents-panel": "threats",
+  "#audit-panel": "audit",
+  "#network-panel": "network"
+};
+const panelByView = {
+  device: "hardware-panel",
+  firmware: "registry-panel",
+  threats: "incidents-panel",
+  audit: "audit-panel",
+  network: "network-panel"
+};
+
+function activateDashboardView(view, updateAddress = true) {
+  const main = $("overview");
+  if (!main) return;
+  const validViews = ["overview", "device", "firmware", "threats", "audit", "network"];
+  if (!validViews.includes(view)) view = "overview";
+
+  const isOverview = view === "overview";
+  const targetPanel = panelByView[view];
+  const hero = main.querySelector(".hero");
+  const metrics = main.querySelector(".metrics");
+  if (hero) hero.hidden = !isOverview;
+  if (metrics) metrics.hidden = !isOverview;
+
+  ["hardware-panel", "registry-panel", "incidents-panel", "network-panel", "audit-panel"]
+    .forEach(id => {
+      const panel = $(id);
+      if (panel) panel.hidden = !isOverview && id !== targetPanel;
+    });
+
+  main.querySelectorAll(".grid").forEach(grid => {
+    const hasVisiblePanel = Array.from(grid.querySelectorAll(":scope > .panel"))
+      .some(panel => !panel.hidden);
+    grid.hidden = !isOverview && !hasVisiblePanel;
+  });
+
+  main.dataset.currentView = view;
+  document.querySelectorAll(".sidebar .nav-item").forEach(link => {
+    const linkView = viewByHash[link.getAttribute("href")];
+    const selected = linkView === view;
+    link.classList.toggle("active", selected);
+    if (selected) link.setAttribute("aria-current", "page");
+    else link.removeAttribute("aria-current");
+  });
+
+  if (updateAddress) {
+    const hash = Object.keys(viewByHash).find(key => viewByHash[key] === view) || "#overview";
+    history.replaceState(null, "", hash);
+  }
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+document.querySelectorAll(".sidebar .nav-item").forEach(link => {
+  link.addEventListener("click", event => {
+    const view = viewByHash[link.getAttribute("href")];
+    if (!view) return;
+    event.preventDefault();
+    activateDashboardView(view);
+  });
+});
+
+/* Main action buttons open the matching focused view too. */
+document.querySelectorAll(".hero-actions a[href]").forEach(link => {
+  link.addEventListener("click", event => {
+    const view = viewByHash[link.getAttribute("href")];
+    if (!view || view === "overview") return;
+    event.preventDefault();
+    activateDashboardView(view);
+  });
+});
+
+window.addEventListener("hashchange", () => {
+  activateDashboardView(viewByHash[window.location.hash] || "overview", false);
+});
+activateDashboardView(viewByHash[window.location.hash] || "overview", false);
