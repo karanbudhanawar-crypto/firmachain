@@ -8,7 +8,7 @@
 </head>
 <body class="ops-body">
 <header class="topbar">
-  <a class="brand" href="/" aria-label="FirmaChain home"><div class="mark">FC</div><div><h1>FirmaChain</h1><p>IoT Firmware Integrity &amp; Response</p></div></a>
+  <a class="brand" href="/" aria-label="FirmaChain home"><div class="mark">FC</div><div><h1>FirmaChain</h1></div></a>
   <label class="top-search" for="global-search"><span>⌕</span><input id="global-search" type="search" placeholder="Search firmware, events, hashes…" autocomplete="off"></label>
   <div class="header-right"><span class="live-dot"></span><span id="top-health">Checking backend</span><button id="refresh">Refresh status</button></div>
 </header>
@@ -22,46 +22,43 @@
     <a class="nav-item" href="#audit-panel"><span class="nav-icon">☷</span>Audit trail</a>
     <a class="nav-item" href="#network-panel"><span class="nav-icon">⌁</span>Network response</a>
   </nav>
-  <div class="sidebar-note"><span class="live-dot"></span><div><strong>Secure monitoring</strong><small>Live status updates every 5 seconds</small></div></div>
   <div class="sidebar-brand"><span class="mini-mark">FC</span><div><strong>FirmaChain</strong><small>Firmware integrity console</small></div></div>
 </aside>
 <main id="overview">
   <section class="hero">
-    <div class="hero-copy"><p class="eyebrow">IOT SECURITY OPERATIONS / LIVE</p><h2>Protect IoT devices.<br><span>Detect firmware threats.</span></h2><p class="sub">Monitor ESP32-S3 firmware measurements, review trust decisions, and inspect a verifiable audit trail.</p>
-      <div class="hero-actions"><a class="primary-link" href="#hardware-panel">⌁ &nbsp; Device connection</a><a class="secondary-link" href="#registry-panel">⬡ &nbsp; Verify firmware</a><a class="secondary-link" href="/api/export/security-report.csv">↓ &nbsp; Export report</a><a class="secondary-link" href="/static/Start-FirmaChain.bat" download>↓ &nbsp; Download Windows connector</a></div>
+    <div class="hero-copy"><p class="eyebrow">IOT SECURITY OPERATIONS / LIVE</p><h2>Protect IoT devices.<br><span>Detect firmware threats.</span></h2>
+      <div class="hero-actions"><a class="primary-link" href="#hardware-panel">⌁ &nbsp; Connect Device</a><a class="secondary-link" href="#registry-panel">⬡ &nbsp; Verify Firmware</a><a class="secondary-link" href="/api/export/security-report.csv">↓ &nbsp; Export Report</a><a class="secondary-link" href="/static/Start-FirmaChain.bat" download>↓ &nbsp; Download Connector</a></div>
     </div>
-    <div class="hero-art" aria-hidden="true"><div class="cyber-grid"></div><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="chip-graphic"><span>ESP32-S3</span><i></i></div><div class="shield-graphic"><b>✓</b></div><span class="art-label label-left">SHA-256</span><span class="art-label label-right">TRUST CHECK</span></div>
-    <div class="hero-chip"><span class="pulse" id="hardware-pulse"></span><div><strong id="hero-device-state">Waiting for device</strong><small id="hero-device-sub">Connect ESP32 through the USB bridge</small></div></div>
+    <div class="hero-art" aria-hidden="true"><div class="cyber-grid"></div><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="chip-graphic"><span>ESP32-S3</span><i></i></div><div class="shield-graphic"><b>✓</b></div></div>
   </section>
   <section class="metrics" aria-label="Live device metrics">
-    <div class="metric"><div class="metric-icon blue">▦</div><div><span>Physical devices online</span><strong id="m-devices">0</strong><small>Based on recent hardware report</small></div></div>
-    <div class="metric"><div class="metric-icon red">⛨</div><div><span>Isolated devices</span><strong id="m-isolated">0</strong><small>Policy decision; enforcement not configured</small></div></div>
-    <div class="metric"><div class="metric-icon amber">⚠</div><div><span>Firmware alerts</span><strong id="m-suspicious">0</strong><small>Review integrity findings</small></div></div>
-    <div class="metric"><div class="metric-icon green">✓</div><div><span>Audit chain</span><strong id="m-audit">Checking</strong><small>Hash-chain verification</small></div></div>
+    <div class="metric"><div class="metric-icon blue">▦</div><div><span>Devices Online</span><strong id="m-devices">0</strong></div></div>
+    <div class="metric"><div class="metric-icon red">⛨</div><div><span>Isolated</span><strong id="m-isolated">0</strong></div></div>
+    <div class="metric"><div class="metric-icon amber">⚠</div><div><span>Alerts</span><strong id="m-suspicious">0</strong></div></div>
+    <div class="metric"><div class="metric-icon green">✓</div><div><span>Audit Status</span><strong id="m-audit">Checking</strong></div></div>
   </section>
   <section class="grid">
     <div class="panel" id="hardware-panel">
       <div class="panel-head"><div><p class="eyebrow">HARDWARE CONNECTION</p><h3>ESP32-S3 device</h3></div><span class="status-badge" id="hardware-badge">Not connected</span></div>
-      <div class="hardware-status"><div class="hardware-icon"><span>ESP</span><b>32</b></div><div class="hardware-info"><strong id="device-name">esp32-s3-usb-01</strong><span id="device-transport">USB serial via host bridge</span><span id="device-last-seen">No report received yet</span></div><div class="connection-state"><i id="connection-dot"></i><strong id="connection-label">OFFLINE</strong></div></div>
+      <div class="hardware-status"><div class="hardware-icon"><span>ESP</span><b>32</b></div><div class="hardware-info"><strong id="device-name">esp32-s3-usb-01</strong></div><div class="connection-state"><i id="connection-dot"></i><strong id="connection-label">OFFLINE</strong></div></div>
       <div class="device-details"><div><span>Firmware version</span><strong id="device-firmware">—</strong></div><div><span>Firmware SHA-256</span><code id="device-hash">Waiting for report</code></div><div><span>Integrity decision</span><strong id="device-decision">Awaiting firmware report</strong></div></div>
-      <p class="hint">Connect the board and keep <code>usb_bridge.py</code> running on the connected computer. The bridge forwards device reports to this cloud service; reports are not hardware-backed attestation.</p>
     </div>
     <div class="panel" id="registry-panel"><div class="panel-head"><div><p class="eyebrow">TRUST REGISTRY</p><h3>Approved firmware</h3></div><span class="small-count" id="release-count">— releases</span></div><div id="releases" class="release-list">Loading registry…</div>
       <form id="release-form" class="form"><h4>Register firmware release</h4><label>Release ID<input name="release_id" required value="release-1.1.0"></label><label>Version<input name="version" required value="1.1.0"></label><label>SHA-256 hash<input name="sha256" required minlength="64" maxlength="64" pattern="[a-fA-F0-9]{64}" placeholder="Paste 64-character firmware hash"></label><label>Notes<input name="notes" value="Approved firmware build"></label><button type="submit">Register release</button><p id="release-msg" class="hint"></p></form>
     </div>
   </section>
   <section class="grid lower">
-    <div class="panel" id="incidents-panel"><div class="panel-head"><div><p class="eyebrow">THREAT MONITOR</p><h3>Recent device events</h3></div><span class="live-tag"><i></i> LIVE</span></div><div id="incidents" class="incident-list"><p class="empty-state">Waiting for device reports. Events will appear here when the ESP32 bridge sends data.</p></div></div>
+    <div class="panel" id="incidents-panel"><div class="panel-head"><div><p class="eyebrow">THREAT MONITOR</p><h3>Recent device events</h3></div><span class="live-tag"><i></i> LIVE</span></div><div id="incidents" class="incident-list"><p class="empty-state">No events</p></div></div>
     <div class="panel" id="network-panel"><div class="panel-head"><div><p class="eyebrow">RESPONSE STATUS</p><h3>Network containment</h3></div><span class="status-badge amber-badge">Enforcement not configured</span></div>
       <div class="network-flow"><div class="network-node"><span>◎</span><strong>Cloud API</strong><small>HTTPS</small></div><div class="flow-line"><i></i></div><div class="network-node"><span>▣</span><strong>USB bridge</strong><small>Serial link</small></div><div class="flow-line"><i></i></div><div class="network-node"><span>⌘</span><strong>ESP32-S3</strong><small id="flow-device-state">Waiting</small></div></div>
       <div class="system-row"><span><i class="status-dot" id="api-dot"></i>Backend API</span><strong id="system-api">Checking…</strong></div>
       <div class="system-row"><span><i class="status-dot" id="db-dot"></i>Database</span><strong id="system-db">Checking…</strong></div>
       <div class="system-row"><span><i class="status-dot" id="audit-dot"></i>Audit chain</span><strong id="system-audit">Checking…</strong></div>
-      <p class="hint">Firmware decisions and audit logging are active. Firewall enforcement is not configured in this deployment.</p>
+
     </div>
   </section>
-  <section class="panel audit-panel" id="audit-panel"><div class="panel-head"><div><p class="eyebrow">TAMPER-EVIDENT RECORDS</p><h3>Security audit trail</h3></div><button class="secondary" id="audit-refresh">Verify chain</button></div><p id="audit-status" class="hint">Checking audit chain…</p><div id="audit" class="audit-list"><p class="empty-state">Audit records will appear here.</p></div></section>
-  <footer><span>FirmaChain · IoT firmware integrity</span><span>API documentation · <a href="/docs">Open API</a></span></footer>
+  <section class="panel audit-panel" id="audit-panel"><div class="panel-head"><div><p class="eyebrow">TAMPER-EVIDENT RECORDS</p><h3>Security audit trail</h3></div><button class="secondary" id="audit-refresh">Verify chain</button></div><p id="audit-status" class="hint">Checking audit chain…</p><div id="audit" class="audit-list"><p class="empty-state">No audit entries</p></div></section>
+  <footer><span>FirmaChain</span><a href="/docs">API Docs</a></footer>
 </main>
 </div>
 <div id="toast" role="status" aria-live="polite"></div>
