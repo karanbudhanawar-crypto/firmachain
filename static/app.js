@@ -141,7 +141,7 @@ function activateDashboardView(view, updateAddress = true) {
 
   if (updateAddress) {
     const hash = Object.keys(viewByHash).find(key => viewByHash[key] === view) || "#overview";
-    history.replaceState(null, "", hash);
+    if (window.location.hash !== hash) history.pushState(null, "", hash);
   }
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
@@ -166,6 +166,9 @@ document.querySelectorAll(".hero-actions a[href]").forEach(link => {
 });
 
 window.addEventListener("hashchange", () => {
+  activateDashboardView(viewByHash[window.location.hash] || "overview", false);
+});
+window.addEventListener("popstate", () => {
   activateDashboardView(viewByHash[window.location.hash] || "overview", false);
 });
 activateDashboardView(viewByHash[window.location.hash] || "overview", false);
