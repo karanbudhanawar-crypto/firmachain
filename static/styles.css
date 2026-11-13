@@ -165,3 +165,23 @@ footer{margin-top:8px;padding:7px 2px;font-size:8px}
  .hero-actions{max-width:100%}
  .primary-link,.secondary-link{font-size:8px;padding:4px 6px}
 }
+
+
+/* Focused navigation view layout */
+#overview[data-current-view]:not([data-current-view="overview"]) .grid {
+  grid-template-columns: minmax(0, 1fr);
+  max-width: 1100px;
+}
+#overview[data-current-view]:not([data-current-view="overview"]) > .panel,
+#overview[data-current-view]:not([data-current-view="overview"]) .grid > .panel {
+  width: 100%;
+}
+.sidebar .nav-item[aria-current="page"] {
+  background: linear-gradient(90deg,#0754a6c9,#0b2a4a);
+  border-color: #087df0;
+  box-shadow: inset 0 0 20px #168bff12, 0 0 14px #087df022;
+  color: #f2f8ff;
+}
+.sidebar .nav-item[aria-current="page"] .nav-icon {
+  color: #4bdcff;
+}
