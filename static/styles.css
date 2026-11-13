@@ -46,3 +46,14 @@ td,th{padding:10px 8px;border-bottom-color:#12304c}th{color:#9cc5ec;font-size:10
 /* Search, export and accessibility refinements */
 .top-search{cursor:text}.top-search input{width:100%;min-width:0;border:0;outline:0;background:transparent;color:#d9efff;font:inherit}.top-search input::placeholder{color:#7193b6}.top-search:focus-within{border-color:#27cfe8;box-shadow:0 0 0 3px #12a6d61b}.hero-actions .secondary-link{background:#061629}.hero-actions .secondary-link:hover,.primary-link:hover{filter:brightness(1.18);transform:translateY(-1px)}[hidden]{display:none!important}.search-match{border-color:#1e9fc8!important;box-shadow:0 0 0 1px #1e9fc833,0 0 24px #008bff12}.release code,.audit-entry code{overflow-wrap:anywhere;word-break:break-word}.hint{line-height:1.7}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+/* Clean dashboard mode: keep headings, menu labels, controls and key values. */
+.hero{grid-template-areas:"copy art";grid-template-rows:auto;min-height:185px;padding-bottom:18px}
+.hero-copy .sub,.sidebar-note,.metric small,.brand p{display:none}
+.hero-actions{margin-top:15px}
+.metrics{margin-bottom:16px}
+.metric{min-height:88px}
+.hardware-info span{display:none}
+.panel-head .eyebrow{margin-bottom:2px}
+.release small,.incident p{display:none}
+.empty-state{padding:12px;font-size:12px}
