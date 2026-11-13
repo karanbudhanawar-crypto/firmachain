@@ -230,3 +230,117 @@ footer{margin-top:8px;padding:7px 2px;font-size:8px}
     padding: 12px;
   }
 }
+
+
+/* Readability pass: increase compact-dashboard typography and controls */
+.topbar{height:58px;min-height:58px;padding:8px 16px}
+.mark{width:34px;height:34px;min-width:34px;font-size:14px;border-radius:9px}
+.brand{gap:9px}.brand h1{font-size:16px}
+.top-search{height:36px;max-width:320px;font-size:12px;padding:5px 11px}
+.top-search span:first-child{font-size:18px}
+.header-right{font-size:12px;gap:8px}
+.header-right button{font-size:12px;padding:8px 13px}
+.app-shell{grid-template-columns:165px minmax(0,1fr)}
+.sidebar{top:58px;height:calc(100vh - 58px);min-height:calc(100vh - 58px);padding:10px 8px}
+.sidebar nav{gap:5px}
+.nav-item{font-size:12px;gap:9px;padding:8px 9px;min-height:36px}
+.nav-icon{width:18px;font-size:16px}
+.sidebar-brand strong{font-size:11px}
+.app-shell main{padding:7px 10px 16px}
+.hero{height:100px;min-height:100px;margin-bottom:7px}
+.hero-art .chip-graphic{width:112px;height:61px}
+.hero-art .chip-graphic span{font-size:11px}
+.hero-art .shield-graphic{width:46px;height:54px}
+.hero-art .shield-graphic b{font-size:26px}
+.hero-actions{gap:8px}
+.primary-link,.secondary-link{height:34px;padding:7px 12px;font-size:11.5px;border-radius:8px}
+.primary-link{min-width:122px}.secondary-link{min-width:108px}
+.metrics{gap:8px;margin-bottom:9px}
+.metric{min-height:54px;padding:8px 10px;gap:9px;border-radius:9px}
+.metric-icon{width:32px;height:32px;flex-basis:32px;font-size:16px}
+.metric span{font-size:11px;line-height:1.25}
+.metric strong{font-size:21px;line-height:1.15}
+.grid{gap:9px;margin-bottom:9px}
+.panel{padding:11px;border-radius:10px}
+.panel-head{margin-bottom:8px;gap:8px}
+.panel-head h3{font-size:14px;line-height:1.3}
+.status-badge{font-size:10px;padding:4px 8px}
+.small-count{font-size:10px}
+.hardware-status{gap:9px;padding:7px 0}
+.hardware-icon{width:34px;height:34px;flex-basis:34px;font-size:8px}
+.hardware-icon b{font-size:13px}
+.hardware-info strong{font-size:11px}
+.connection-state{font-size:10px;gap:5px}
+.connection-state i{width:6px;height:6px}
+.device-details>div{padding:6px 0;gap:8px}
+.device-details span{font-size:10.5px}
+.device-details strong,.device-details code{font-size:10.5px;max-width:72%}
+.device-details code{white-space:normal;word-break:break-all}
+.release-list{gap:7px}
+.release{padding:8px;border-radius:8px}
+.release strong{font-size:10.5px}
+.release code{font-size:9.5px;line-height:1.45;margin-top:5px;white-space:normal;overflow-wrap:anywhere}
+.release-actions{margin-top:7px}
+.release-actions button{font-size:10px;padding:5px 10px}
+.pill{font-size:9px;padding:3px 6px}
+.form-details{margin-top:8px;padding-top:7px}
+.form-details summary{font-size:10.5px}
+.form{margin-top:7px;padding-top:7px}
+.form label{font-size:10.5px;margin:7px 0}
+.form input{padding:8px;font-size:11px}
+.form button{font-size:11px;padding:8px 11px}
+.lower{gap:9px}
+.lower .panel-head h3{font-size:13px}
+.network-flow{padding:9px 0 11px;gap:6px}
+.network-node{min-width:42px;gap:3px}
+.network-node span{width:30px;height:30px;font-size:15px}
+.network-node strong{font-size:10px}
+.network-node small{font-size:9px}
+.system-row{padding:7px 3px;font-size:10.5px}
+.system-row strong{font-size:10.5px}
+.audit-panel{margin-top:0}
+.audit-panel .panel-head h3{font-size:14px}
+.audit-panel .hint,.hint{font-size:10px;line-height:1.5}
+.audit-entry{padding:8px}
+.audit-entry .event{font-size:10.5px}
+.audit-entry .meta{font-size:9.5px}
+.audit-entry code{font-size:9.5px;line-height:1.45}
+.empty-state{font-size:10.5px;line-height:1.5;padding:9px}
+footer{margin-top:9px;padding:8px 2px;font-size:9.5px}
+#overview[data-current-view]:not([data-current-view="overview"]) .panel-head h3{font-size:15px}
+#overview[data-current-view]:not([data-current-view="overview"]) .panel-head{margin-bottom:12px}
+#overview[data-current-view]:not([data-current-view="overview"]) .device-details span,
+#overview[data-current-view]:not([data-current-view="overview"]) .device-details strong,
+#overview[data-current-view]:not([data-current-view="overview"]) .device-details code,
+#overview[data-current-view]:not([data-current-view="overview"]) .release strong,
+#overview[data-current-view]:not([data-current-view="overview"]) .release code,
+#overview[data-current-view]:not([data-current-view="overview"]) .incident strong,
+#overview[data-current-view]:not([data-current-view="overview"]) .incident small,
+#overview[data-current-view]:not([data-current-view="overview"]) .audit-entry .event,
+#overview[data-current-view]:not([data-current-view="overview"]) .audit-entry .meta,
+#overview[data-current-view]:not([data-current-view="overview"]) .audit-entry code{font-size:11px}
+@media(max-width:760px){
+ .topbar{height:auto;min-height:54px;padding:7px 9px}
+ .mark{width:30px;height:30px;min-width:30px}
+ .brand h1{font-size:14px}
+ .header-right{font-size:10px}
+ .header-right button{font-size:10px;padding:6px 9px}
+ .app-shell{display:block}
+ .sidebar{top:auto;height:auto;min-height:0;padding:5px 7px}
+ .nav-item{font-size:10.5px;min-height:32px;padding:6px 8px}
+ .app-shell main{padding:7px}
+ .metrics{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .metric span{font-size:10px}.metric strong{font-size:19px}
+ .panel-head h3{font-size:13px}
+ .device-details span,.device-details strong,.device-details code{font-size:10px}
+ .release strong{font-size:10px}.release code{font-size:9px}
+ .network-node strong{font-size:9.5px}.network-node small{font-size:9px}
+ .system-row,.system-row strong{font-size:10px}
+ .empty-state{font-size:10px}
+}
+@media(max-width:380px){
+ .header-right{font-size:9px}
+ .header-right button{font-size:9px;padding:5px 7px}
+ .nav-item{font-size:9.5px;padding:5px 6px}
+ .primary-link,.secondary-link{font-size:9.5px;min-width:0}
+}
