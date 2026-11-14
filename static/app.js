@@ -427,7 +427,7 @@
   }
 
   document.querySelectorAll(".nav-btn").forEach((button) => button.addEventListener("click", () => setView(button.dataset.view)));
-  document.querySelectorAll("[data-go-view]").forEach((button) => button.addEventListener("click", () => setView(button.dataset.goView)));
+  document.addEventListener("click", (event) => { const button = event.target.closest("[data-go-view]"); if (button) setView(button.dataset.goView); });
   document.querySelectorAll("[data-go]").forEach((button) => button.addEventListener("click", () => {
     const target = $(button.dataset.go);
     if (target) {
