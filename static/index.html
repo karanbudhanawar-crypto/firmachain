@@ -1,66 +1,166 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#030914">
-<title>FirmaChain | IoT Security Operations</title>
-<link rel="stylesheet" href="/static/styles.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#070b14">
+  <meta name="description" content="FirmaChain IoT firmware integrity and security command center">
+  <title>FirmaChain | IoT Security Command Center</title>
+  <link rel="stylesheet" href="/static/styles.css">
 </head>
-<body class="ops-body">
-<header class="topbar">
-  <a class="brand" href="/" aria-label="FirmaChain home"><div class="mark">FC</div><div><h1>FirmaChain</h1></div></a>
-  <label class="top-search" for="global-search"><span>⌕</span><input id="global-search" type="search" placeholder="Search…" autocomplete="off"></label>
-  <div class="header-right"><span class="live-dot"></span><span id="top-health">Checking backend</span><button id="refresh">Refresh</button></div>
-</header>
-<div class="app-shell">
-<aside class="sidebar">
-  <nav aria-label="Main navigation">
-    <a class="nav-item active" href="#overview"><span class="nav-icon">⌂</span>Overview</a>
-    <a class="nav-item" href="#hardware-panel"><span class="nav-icon">▦</span>Device</a>
-    <a class="nav-item" href="#registry-panel"><span class="nav-icon">⬡</span>Firmware</a>
-    <a class="nav-item" href="#incidents-panel"><span class="nav-icon">⛨</span>Threats</a>
-    <a class="nav-item" href="#audit-panel"><span class="nav-icon">☷</span>Audit</a>
-    <a class="nav-item" href="#network-panel"><span class="nav-icon">⌁</span>Network</a>
-  </nav>
-  <div class="sidebar-brand"><span class="mini-mark">FC</span><div><strong>FirmaChain</strong><small>Firmware integrity console</small></div></div>
-</aside>
-<main id="overview">
-  <section class="hero">
-    <div class="hero-copy"><p class="eyebrow">IOT SECURITY OPERATIONS / LIVE</p><h2>Protect IoT devices.<br><span>Detect firmware threats.</span></h2>
-      <div class="hero-actions"><a class="primary-link" href="#hardware-panel">⌁ &nbsp; Connect Device</a><a class="secondary-link" href="#registry-panel">⬡ &nbsp; Verify Firmware</a><a class="secondary-link" href="/api/export/security-report.csv">↓ &nbsp; Export Report</a></div>
-    </div>
-    <div class="hero-art" aria-hidden="true"><div class="cyber-grid"></div><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="chip-graphic"><span>ESP32-S3</span><i></i></div><div class="shield-graphic"><b>✓</b></div></div>
-  </section>
-  <section class="metrics" aria-label="Live device metrics">
-    <div class="metric"><div class="metric-icon blue">▦</div><div><span>Devices Online</span><strong id="m-devices">0</strong></div></div>
-    <div class="metric"><div class="metric-icon red">⛨</div><div><span>Isolated</span><strong id="m-isolated">0</strong></div></div>
-    <div class="metric"><div class="metric-icon amber">⚠</div><div><span>Alerts</span><strong id="m-suspicious">0</strong></div></div>
-    <div class="metric"><div class="metric-icon green">✓</div><div><span>Audit Status</span><strong id="m-audit">Checking</strong></div></div>
-  </section>
-  <section class="grid">
-    <div class="panel" id="hardware-panel">
-      <div class="panel-head"><div><h3>ESP32-S3 Device</h3></div><span class="status-badge" id="hardware-badge">Not connected</span></div>
-      <div class="hardware-status"><div class="hardware-icon"><span>ESP</span><b>32</b></div><div class="hardware-info"><strong id="device-name">esp32-s3-usb-01</strong></div><div class="connection-state"><i id="connection-dot"></i><strong id="connection-label">OFFLINE</strong></div></div>
-      <div class="device-details"><div><span>Firmware version</span><strong id="device-firmware">—</strong></div><div><span>Firmware SHA-256</span><code id="device-hash">Waiting for report</code></div><div><span>Integrity decision</span><strong id="device-decision">Awaiting firmware report</strong></div></div>
-    </div>
-    <div class="panel" id="registry-panel"><div class="panel-head"><div><h3>Approved Firmware</h3></div><span class="small-count" id="release-count">— releases</span></div><div id="releases" class="release-list">Loading registry…</div>
-      <details class="form-details"><summary>Register Firmware</summary><form id="release-form" class="form"><label>Release ID<input name="release_id" required value="release-1.1.0"></label><label>Version<input name="version" required value="1.1.0"></label><label>SHA-256 hash<input name="sha256" required minlength="64" maxlength="64" pattern="[a-fA-F0-9]{64}" placeholder="Paste 64-character firmware hash"></label><label>Notes<input name="notes" value="Approved firmware build"></label><button type="submit">Register release</button><p id="release-msg" class="hint"></p></form></details>
-    </div>
-  </section>
-  <section class="grid lower">
-    <div class="panel" id="incidents-panel"><div class="panel-head"><div><p class="eyebrow">THREAT MONITOR</p><h3>Recent device events</h3></div><span class="live-tag"><i></i> LIVE</span></div><div id="incidents" class="incident-list"><p class="empty-state">No events</p></div></div>
-    <div class="panel" id="network-panel"><div class="panel-head"><div><p class="eyebrow">RESPONSE STATUS</p><h3>Network containment</h3></div><span class="status-badge amber-badge">Enforcement not configured</span></div>
-      <div class="network-flow"><div class="network-node"><span>◎</span><strong>Cloud API</strong><small>HTTPS</small></div><div class="flow-line"><i></i></div><div class="network-node"><span>▣</span><strong>USB bridge</strong><small>Serial link</small></div><div class="flow-line"><i></i></div><div class="network-node"><span>⌘</span><strong>ESP32-S3</strong><small id="flow-device-state">Waiting</small></div></div>
-      <div class="system-row"><span><i class="status-dot" id="api-dot"></i>Backend API</span><strong id="system-api">Checking…</strong></div>
-      <div class="system-row"><span><i class="status-dot" id="db-dot"></i>Database</span><strong id="system-db">Checking…</strong></div>
-      <div class="system-row"><span><i class="status-dot" id="audit-dot"></i>Audit chain</span><strong id="system-audit">Checking…</strong></div>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div>
+        <a class="brand" href="#dashboard" aria-label="FirmaChain Command Center">
+          <span class="brand-mark">FC</span>
+          <span class="brand-copy"><strong>FirmaChain</strong><small>IoT Security &amp; Integrity Shield</small></span>
+        </a>
+        <nav class="nav-menu" aria-label="Main navigation">
+          <button class="nav-btn active" type="button" data-view="dashboard"><span>📊</span> Command Center</button>
+          <button class="nav-btn" type="button" data-view="firmware"><span>🔒</span> Software Updates</button>
+          <button class="nav-btn" type="button" data-view="audit"><span>📜</span> Security History</button>
+          <button class="nav-btn" type="button" data-view="simulator"><span>⚡</span> Attack Simulator</button>
+        </nav>
+      </div>
+      <div class="sidebar-footer">
+        <div class="system-shield-box">
+          <div class="shield-status"><i id="api-dot" class="status-dot pending"></i><strong id="api-status">Checking backend…</strong></div>
+          <div class="shield-line"><span>Gateway enforcement</span><b class="text-warn">Simulation only</b></div>
+          <div class="shield-line"><span>Audit chain</span><b id="sidebar-audit">Checking</b></div>
+          <a class="download-link" href="/static/Start-FirmaChain.bat" download>↓ Download Windows USB Bridge</a>
+          <a class="download-link" href="/docs" target="_blank" rel="noreferrer">↗ API Documentation</a>
+        </div>
+        <div class="sidebar-brand">FIRMACHAIN <span>Firmware Integrity Console</span></div>
+      </div>
+    </aside>
 
-    </div>
-  </section>
-  <section class="panel audit-panel" id="audit-panel"><div class="panel-head"><div><p class="eyebrow">TAMPER-EVIDENT RECORDS</p><h3>Security audit trail</h3></div><button class="secondary" id="audit-refresh">Verify chain</button></div><p id="audit-status" class="hint">Checking audit chain…</p><div id="audit" class="audit-list"><p class="empty-state">No audit entries</p></div></section>
-  <footer><span>FirmaChain</span><span><a href="/docs">API Docs</a> · <a href="/static/Start-FirmaChain.bat" download>Download Connector</a></span></footer>
-</main>
-</div>
-<div id="toast" role="status" aria-live="polite"></div>
-<script src="/static/app.js"></script>
-</body></html>
+    <main class="main-view">
+      <header class="topbar">
+        <div class="topbar-title"><span class="mobile-mark">FC</span><div><strong id="current-page-title">Security Command Center</strong><small id="current-page-subtitle">Device status, firmware integrity and security events</small></div></div>
+        <label class="search-box"><span>⌕</span><input id="global-search" type="search" placeholder="Search devices, firmware hashes, events…" autocomplete="off"></label>
+        <div class="topbar-actions">
+          <span class="top-device-status"><i id="device-dot" class="status-dot pending"></i><span id="device-status">Checking ESP32-S3</span></span>
+          <button class="btn btn-refresh" id="refresh-btn" type="button">↻ Refresh</button>
+        </div>
+      </header>
+
+      <section class="view active" id="view-dashboard" data-title="Security Command Center" data-subtitle="Device status, firmware integrity and security events">
+        <div class="hero">
+          <div class="hero-copy">
+            <div class="eyebrow">IOT SECURITY / COMMAND CENTER</div>
+            <h1>Protect IoT devices.<br><span>Detect firmware threats.</span></h1>
+            <p>Monitor device reports, compare firmware hashes and inspect security activity.</p>
+            <div class="hero-actions">
+              <button class="btn btn-blue" type="button" data-go="dashboard-register">＋ Register Device</button>
+              <button class="btn btn-outline" type="button" data-go-view="simulator">⚡ Attack Simulator</button>
+              <a class="btn btn-outline" href="/api/export/security-report.csv">↓ Export Report</a>
+            </div>
+          </div>
+          <div class="hero-art" aria-hidden="true">
+            <div class="hero-ring ring-a"></div><div class="hero-ring ring-b"></div>
+            <div class="chip-visual"><span>ESP32-S3</span></div>
+            <div class="shield-visual">✓</div>
+            <span class="hero-label">SHA-256</span>
+          </div>
+        </div>
+
+        <div class="metrics-grid">
+          <article class="metric-card metric-blue"><div class="metric-icon">▦</div><div><span>Registered Devices</span><strong id="metric-devices">—</strong><small>Database records</small></div></article>
+          <article class="metric-card metric-green"><div class="metric-icon">✓</div><div><span>Approved Reports</span><strong id="metric-approved">—</strong><small>Reported hash matches release</small></div></article>
+          <article class="metric-card metric-red"><div class="metric-icon">⛨</div><div><span>Isolated Devices</span><strong id="metric-isolated">—</strong><small>Policy state, not firewall proof</small></div></article>
+          <article class="metric-card metric-amber"><div class="metric-icon">⚠</div><div><span>Security Incidents</span><strong id="metric-incidents">—</strong><small>Recorded by backend</small></div></article>
+        </div>
+
+        <div class="content-grid dashboard-grid">
+          <section class="panel device-panel">
+            <div class="panel-heading"><div><div class="eyebrow">HARDWARE CONNECTION</div><h2>Connected Devices</h2></div><span class="count-label" id="device-count">0 devices</span></div>
+            <div id="device-list" class="device-list"><div class="empty-state">Loading device records…</div></div>
+            <div class="panel-footnote">Reported SHA-256 values are compared with the approved registry. They are not hardware-backed remote attestation.</div>
+          </section>
+          <section class="panel events-panel">
+            <div class="panel-heading"><div><div class="eyebrow">SECURITY MONITOR</div><h2>Recent Device Events</h2></div><span class="live-pill"><i class="status-dot online"></i> LIVE</span></div>
+            <div id="incident-list" class="incident-list"><div class="empty-state">Loading events…</div></div>
+          </section>
+          <section class="panel system-panel">
+            <div class="panel-heading"><div><div class="eyebrow">SYSTEM STATUS</div><h2>Security Services</h2></div><span id="gateway-mode" class="status-pill warning">Enforcement not configured</span></div>
+            <div class="network-flow">
+              <div class="network-node"><span>◎</span><strong>Cloud API</strong><small>HTTPS</small></div><div class="network-line"></div>
+              <div class="network-node"><span>▣</span><strong>USB Bridge</strong><small>Serial link</small></div><div class="network-line"></div>
+              <div class="network-node"><span>⌘</span><strong>ESP32-S3</strong><small id="flow-device-state">Waiting</small></div>
+            </div>
+            <div class="service-list">
+              <div><span><i class="status-dot pending" id="backend-dot"></i>Backend API</span><b id="backend-state">Checking</b></div>
+              <div><span><i class="status-dot online"></i>Database</span><b>Connected</b></div>
+              <div><span><i id="audit-dot" class="status-dot pending"></i>Audit hash chain</span><b id="audit-state">Checking</b></div>
+              <div><span><i id="usb-dot" class="status-dot pending"></i>ESP32-S3 report</span><b id="usb-state">Waiting</b></div>
+            </div>
+          </section>
+        </div>
+
+        <details class="panel register-panel" id="dashboard-register">
+          <summary>＋ Register Device Record</summary>
+          <form id="device-register-form" class="form-grid">
+            <label>Device ID<input name="device_id" value="esp32-s3-usb-01" required maxlength="80"></label>
+            <label>Device Name<input name="name" value="ESP32-S3 Device" required maxlength="160"></label>
+            <label>Firmware Version<input name="firmware_version" value="1.0.0" required maxlength="80"></label>
+            <label>Reported Firmware SHA-256<input name="firmware_hash" placeholder="64 hexadecimal characters" pattern="[A-Fa-f0-9]{64}" minlength="64" maxlength="64" required></label>
+            <div class="form-actions"><button class="btn btn-blue" type="submit">Save Device Record</button><span id="register-message" class="form-message"></span></div>
+          </form>
+          <p class="note">This registers a database record only. It does not flash firmware, create a device certificate or prove hardware identity.</p>
+        </details>
+      </section>
+
+      <section class="view" id="view-firmware" data-title="Device Software & Integrity" data-subtitle="Approved firmware releases and device-reported hash comparisons">
+        <div class="page-heading"><div><div class="eyebrow">TRUST REGISTRY</div><h1>Firmware Releases</h1><p>Manage approved release hashes and compare them with device reports.</p></div><button class="btn btn-outline" id="firmware-refresh" type="button">↻ Refresh Registry</button></div>
+        <section class="panel">
+          <div class="panel-heading"><div><div class="eyebrow">APPROVED SOFTWARE</div><h2>Release Registry</h2></div><span class="count-label" id="release-count">0 releases</span></div>
+          <div id="release-list" class="release-list"><div class="empty-state">Loading firmware releases…</div></div>
+        </section>
+        <section class="panel release-form-panel">
+          <div class="panel-heading"><div><div class="eyebrow">ADMINISTRATION</div><h2>Register Firmware Release</h2></div></div>
+          <form id="release-create-form" class="form-grid">
+            <label>Release ID<input name="release_id" value="release-1.1.0" required maxlength="80"></label>
+            <label>Version<input name="version" value="1.1.0" required maxlength="80"></label>
+            <label class="field-wide">SHA-256 Hash<input name="sha256" placeholder="64 hexadecimal characters" pattern="[A-Fa-f0-9]{64}" minlength="64" maxlength="64" required></label>
+            <label class="field-wide">Notes<input name="notes" placeholder="Release notes (optional)" maxlength="500"></label>
+            <div class="form-actions field-wide"><button class="btn btn-blue" type="submit">Register Release</button><span id="release-message" class="form-message"></span></div>
+          </form>
+          <p class="note">Firmware changes require the server-configured administrator token, requested for each action and not stored by this page. Registry operations do not perform OTA or flash the ESP32.</p>
+        </section>
+        <section class="panel">
+          <div class="panel-heading"><div><div class="eyebrow">DEVICE MEASUREMENTS</div><h2>Reported Firmware Comparison</h2></div></div>
+          <div id="device-firmware-table" class="table-wrap"><div class="empty-state">Loading device reports…</div></div>
+          <p class="note">A registry match means the reported hash is present in an approved release. It does not prove secure boot or remote attestation.</p>
+        </section>
+      </section>
+
+      <section class="view" id="view-audit" data-title="Security History" data-subtitle="Server-recorded audit entries and hash-chain validation">
+        <div class="page-heading"><div><div class="eyebrow">INTEGRITY RECORD</div><h1>Security Audit History</h1><p>Inspect recorded security actions and verify the audit hash chain.</p></div><button class="btn btn-outline" id="audit-refresh" type="button">✓ Verify Chain</button></div>
+        <div class="metrics-grid audit-metrics">
+          <article class="metric-card metric-blue"><div class="metric-icon">☷</div><div><span>Audit Entries</span><strong id="audit-count">—</strong><small>Records in the API</small></div></article>
+          <article class="metric-card metric-green"><div class="metric-icon">✓</div><div><span>Hash Chain</span><strong id="audit-valid">—</strong><small>Server verification result</small></div></article>
+        </div>
+        <section class="panel">
+          <div class="panel-heading"><div><div class="eyebrow">AUDIT LOG</div><h2>Recorded Events</h2></div><span class="count-label" id="audit-entry-count">0 entries</span></div>
+          <div id="audit-list" class="audit-list"><div class="empty-state">Loading audit entries…</div></div>
+        </section>
+        <p class="note">This is the application's hash-chained audit log. It is not an external blockchain explorer or proof of device firmware integrity.</p>
+      </section>
+
+      <section class="view" id="view-simulator" data-title="Attack Simulator (Demo Only)" data-subtitle="Browser-only sample scenarios; no live hardware or network actions">
+        <div class="page-heading"><div><div class="eyebrow">LOCAL DEMONSTRATION</div><h1>Attack Simulator</h1><p>Run sample attack scenarios to see example detection messages. Nothing is sent to the device, backend or firewall.</p></div><span class="status-pill warning">Demo only</span></div>
+        <div class="simulator-grid">
+          <article class="panel scenario-card"><span class="scenario-icon red">⌁</span><h2>Malicious Firmware Injection</h2><p>Simulate a firmware hash that does not match an approved release.</p><button class="btn btn-red" type="button" data-scenario="firmware">Run Demo Scenario</button></article>
+          <article class="panel scenario-card"><span class="scenario-icon amber">⚠</span><h2>MQTT Packet Flood</h2><p>Simulate a sample traffic-rate anomaly for an IoT device.</p><button class="btn btn-red" type="button" data-scenario="network">Run Demo Scenario</button></article>
+          <article class="panel scenario-card"><span class="scenario-icon blue">◉</span><h2>Sensor Spoofing</h2><p>Simulate unexpected temperature and voltage telemetry.</p><button class="btn btn-red" type="button" data-scenario="sensor">Run Demo Scenario</button></article>
+        </div>
+        <section class="panel simulator-log-panel"><div class="panel-heading"><div><div class="eyebrow">BROWSER-ONLY OUTPUT</div><h2>Simulation Log</h2></div><button class="btn btn-outline btn-small" type="button" id="clear-sim-log">Clear</button></div><div id="simulator-log" class="simulator-log"><div class="log-entry">Demo ready. Choose a sample scenario above.</div></div></section>
+      </section>
+
+      <footer class="app-footer"><span>FirmaChain · IoT Firmware Integrity</span><span><a href="/docs" target="_blank" rel="noreferrer">API Docs</a> · <a href="/static/Start-FirmaChain.bat" download>Download Connector</a></span></footer>
+    </main>
+  </div>
+  <script src="/static/app.js" defer></script>
+</body>
+</html>
