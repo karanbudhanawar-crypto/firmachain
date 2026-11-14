@@ -1,70 +1,57 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="250" viewBox="0 0 1800 250" role="img" aria-label="ESP32-S3 microchip, SHA-256 label, circuit decoration and security shield">
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="250" viewBox="0 0 1800 250" role="img" aria-label="Minimal cyan circuit path with connected nodes">
 <defs>
-  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="0">
-    <stop offset="0" stop-color="#06172b"/><stop offset=".5" stop-color="#06203b"/><stop offset="1" stop-color="#04172e"/>
+  <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#06182b"/>
+    <stop offset=".55" stop-color="#07192b"/>
+    <stop offset="1" stop-color="#061426"/>
   </linearGradient>
-  <radialGradient id="glow" cx="80%" cy="58%" r="55%">
-    <stop offset="0" stop-color="#0879c4" stop-opacity=".30"/><stop offset="1" stop-color="#06182c" stop-opacity="0"/>
+  <linearGradient id="circuit" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#13aabd"/>
+    <stop offset=".48" stop-color="#13c1d2"/>
+    <stop offset="1" stop-color="#16a9c5"/>
+  </linearGradient>
+  <radialGradient id="nodeGlow">
+    <stop offset="0" stop-color="#27e3ec" stop-opacity=".28"/>
+    <stop offset="1" stop-color="#27e3ec" stop-opacity="0"/>
   </radialGradient>
-  <linearGradient id="trace" x1="0" y1="0" x2="1" y2="0">
-    <stop offset="0" stop-color="#0878bf" stop-opacity=".05"/><stop offset=".38" stop-color="#0b84cd" stop-opacity=".42"/><stop offset=".78" stop-color="#0bb9ef" stop-opacity=".96"/><stop offset="1" stop-color="#0b9be2" stop-opacity=".85"/>
-  </linearGradient>
-  <linearGradient id="chip" x1="0" y1="0" x2="1" y2="1">
-    <stop offset="0" stop-color="#0b4a7d"/><stop offset=".52" stop-color="#07365e"/><stop offset="1" stop-color="#061f3d"/>
-  </linearGradient>
-  <filter id="glowLine" x="-20%" y="-100%" width="140%" height="300%">
-    <feGaussianBlur stdDeviation="2.2"/>
-  </filter>
-  <filter id="chipGlow" x="-50%" y="-50%" width="200%" height="200%">
-    <feGaussianBlur stdDeviation="8" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+  <filter id="softGlow" x="-50%" y="-100%" width="200%" height="300%">
+    <feGaussianBlur stdDeviation="4"/>
   </filter>
 </defs>
-<rect width="1800" height="250" fill="url(#bg)"/>
-<rect width="1800" height="250" fill="url(#glow)"/>
-<!-- flowing circuit traces -->
-<path d="M-20 172 C250 154 510 143 760 132 S1330 100 1820 20" fill="none" stroke="#0876bf" stroke-opacity=".32" stroke-width="5" filter="url(#glowLine)"/>
-<path d="M-20 172 C250 154 510 143 760 132 S1330 100 1820 20" fill="none" stroke="url(#trace)" stroke-width="2"/>
-<path d="M-20 206 C330 189 550 176 820 166 S1350 140 1820 76" fill="none" stroke="#0876bf" stroke-opacity=".22" stroke-width="4" filter="url(#glowLine)"/>
-<path d="M-20 206 C330 189 550 176 820 166 S1350 140 1820 76" fill="none" stroke="url(#trace)" stroke-opacity=".72" stroke-width="1.6"/>
-<path d="M-20 103 C250 99 460 97 720 90" fill="none" stroke="#0c6cae" stroke-opacity=".18" stroke-width="1"/>
-<!-- chip orbit rings -->
-<g fill="none" stroke="#0b8fc9" stroke-opacity=".43">
-  <ellipse cx="1435" cy="130" rx="244" ry="104" transform="rotate(-13 1435 130)"/>
-  <ellipse cx="1435" cy="130" rx="204" ry="83" transform="rotate(-13 1435 130)" stroke-opacity=".32"/>
-  <ellipse cx="1435" cy="130" rx="164" ry="64" transform="rotate(-13 1435 130)" stroke-opacity=".2"/>
+<rect width="1800" height="250" fill="url(#background)"/>
+<path d="M0 42 H1800" stroke="#16405b" stroke-opacity=".25" stroke-width="1"/>
+<path d="M0 207 H1800" stroke="#16405b" stroke-opacity=".2" stroke-width="1"/>
+<path d="M0 125 H1800" stroke="#0c3550" stroke-opacity=".15" stroke-width="1"/>
+<!-- soft light beneath the circuit -->
+<g fill="none" stroke="#12c6d7" stroke-width="7" opacity=".14" filter="url(#softGlow)" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M300 125 H640 M720 125 V72 H1080 H1280"/>
+  <path d="M780 165 V205 H1280"/>
 </g>
-<!-- SHA-256 label restored -->
-<rect x="890" y="111" width="112" height="31" rx="5" fill="#05213a" fill-opacity=".92" stroke="#087eae" stroke-opacity=".85"/>
-<text x="946" y="131" text-anchor="middle" fill="#31dce6" font-family="Consolas,monospace" font-size="13" letter-spacing="2">SHA-256</text>
-
-<!-- Subtle circuit decoration in the empty upper-left area -->
-<g fill="none" stroke="#20cde3" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" opacity=".76">
-  <path d="M150 66 H214 V91 H270 M214 66 V42 H300 M270 91 V116 H326"/>
-  <path d="M300 42 H342 M326 116 H370"/>
-  <circle cx="150" cy="66" r="5" fill="#23dbe6" stroke="none"/>
-  <circle cx="270" cy="91" r="4" fill="#23dbe6" stroke="none"/>
-  <circle cx="342" cy="42" r="4" fill="#23dbe6" stroke="none"/>
-  <circle cx="370" cy="116" r="4" fill="#23dbe6" stroke="none"/>
-  <rect x="222" y="52" width="30" height="30" rx="6" fill="#082b49" fill-opacity=".8" stroke="#159bcc"/>
-  <path d="M232 67 H242 M237 62 V72" stroke="#39dce8" stroke-width="2.5"/>
-  <path d="M290 28 l10 -8 10 8 v12 l-10 8 -10 -8z" stroke="#1689bf" stroke-opacity=".85"/>
-  <circle cx="300" cy="34" r="3" fill="#32dce5" stroke="none"/>
-  <path d="M336 104 h20 v20 h-20z M346 99 v5 M346 124 v5 M331 114 h5 M356 114 h5" stroke="#1689bf"/>
+<!-- main horizontal trace -->
+<g fill="none" stroke="url(#circuit)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M300 125 H640"/>
+  <path d="M720 125 V72 H1080"/>
+  <path d="M1120 72 H1280"/>
+  <path d="M780 165 V205 H1280"/>
 </g>
-<!-- ESP32 chip -->
-<g transform="rotate(-17 1422 126)" filter="url(#chipGlow)">
-  <rect x="1284" y="61" width="272" height="126" rx="23" fill="url(#chip)" stroke="#16b9eb" stroke-width="2.5"/>
-  <rect x="1295" y="72" width="250" height="104" rx="16" fill="none" stroke="#1987be" stroke-opacity=".48"/>
-  <g stroke="#159bd2" stroke-width="3" stroke-linecap="round">
-    <path d="M1311 61V44 M1340 61V44 M1369 61V44 M1398 61V44 M1427 61V44 M1456 61V44 M1485 61V44 M1514 61V44"/>
-    <path d="M1311 187V204 M1340 187V204 M1369 187V204 M1398 187V204 M1427 187V204 M1456 187V204 M1485 187V204 M1514 187V204"/>
-  </g>
-  <text x="1420" y="135" text-anchor="middle" fill="#d1efff" font-family="Segoe UI,Arial,sans-serif" font-size="23" font-weight="700" letter-spacing="1.1">ESP32-S3</text>
-</g>
-<!-- shield emblem -->
-<g transform="translate(1600 36)">
-  <path d="M47 0 L91 17 L87 72 Q72 91 47 105 Q22 91 7 72 L3 17 Z" fill="#06314d" fill-opacity=".92" stroke="#13c9e8" stroke-width="5"/>
-  <path d="M20 51 L39 69 L72 29" fill="none" stroke="#24e4de" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M47 7 L83 21" fill="none" stroke="#65e8f5" stroke-opacity=".5" stroke-width="2"/>
-</g>
+<!-- input point -->
+<circle cx="300" cy="125" r="15" fill="url(#nodeGlow)"/>
+<circle cx="300" cy="125" r="6.5" fill="#18c4d5"/>
+<!-- central square with plus -->
+<rect x="640" y="90" width="80" height="75" rx="3" fill="#09253b" stroke="#10b9ca" stroke-width="2.4"/>
+<rect x="651" y="101" width="58" height="53" rx="5" fill="none" stroke="#136782" stroke-width="1.2"/>
+<path d="M680 112 V143 M664.5 127.5 H695.5" stroke="#18c5d7" stroke-width="3.2" stroke-linecap="round"/>
+<circle cx="720" cy="125" r="5.5" fill="#16becf"/>
+<!-- upper hexagon terminal -->
+<path d="M1080 56 L1095 47 L1110 56 V76 L1095 85 L1080 76 Z" fill="#08263b" stroke="#12b8ca" stroke-width="2.2"/>
+<path d="M1095 47 V37 M1095 85 V94" stroke="#0e829f" stroke-width="2"/>
+<circle cx="1280" cy="72" r="15" fill="url(#nodeGlow)"/>
+<circle cx="1280" cy="72" r="6.5" fill="#18c4d5"/>
+<!-- lower connector -->
+<path d="M1192 190 H1242 V220 H1306" fill="none" stroke="#148ca7" stroke-width="2" opacity=".65"/>
+<rect x="1245" y="190" width="38" height="30" rx="2" fill="#08263b" stroke="#11aabc" stroke-width="2"/>
+<path d="M1264 183 V190 M1264 220 V228 M1238 205 H1245 M1283 205 H1292" stroke="#11aabc" stroke-width="2"/>
+<circle cx="1306" cy="205" r="6" fill="#18c4d5"/>
+<!-- subtle trace ends -->
+<path d="M1306 205 H1390" stroke="#0b7691" stroke-width="1.4" opacity=".45"/>
 </svg>
