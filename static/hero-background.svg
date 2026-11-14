@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="250" viewBox="0 0 1800 250" role="img" aria-label="ESP32-S3 chip and security shield">
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="250" viewBox="0 0 1800 250" role="img" aria-label="Microchip circuit artwork and security shield">
 <defs>
   <linearGradient id="bg" x1="0" y1="0" x2="1" y2="0">
     <stop offset="0" stop-color="#06172b"/><stop offset=".5" stop-color="#06203b"/><stop offset="1" stop-color="#04172e"/>
@@ -33,9 +33,16 @@
   <ellipse cx="1435" cy="130" rx="204" ry="83" transform="rotate(-13 1435 130)" stroke-opacity=".32"/>
   <ellipse cx="1435" cy="130" rx="164" ry="64" transform="rotate(-13 1435 130)" stroke-opacity=".2"/>
 </g>
-<!-- SHA label -->
-<rect x="890" y="111" width="112" height="31" rx="5" fill="#05213a" fill-opacity=".92" stroke="#087eae" stroke-opacity=".85"/>
-<text x="946" y="131" text-anchor="middle" fill="#31dce6" font-family="Consolas,monospace" font-size="13" letter-spacing="2">SHA-256</text>
+<!-- Small data-circuit ornament -->
+<g transform="translate(930 126)" fill="none" stroke="#28d9e8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" opacity=".9">
+  <path d="M-27 0 H-9 M9 0 H28 M0 -23 V-9 M0 9 V23"/>
+  <circle cx="0" cy="0" r="9" fill="#073b5c" stroke="#24d4e8"/>
+  <circle cx="-27" cy="0" r="3.2" fill="#20d6e6" stroke="none"/>
+  <circle cx="28" cy="0" r="3.2" fill="#20d6e6" stroke="none"/>
+  <circle cx="0" cy="-23" r="3.2" fill="#20d6e6" stroke="none"/>
+  <circle cx="0" cy="23" r="3.2" fill="#20d6e6" stroke="none"/>
+  <path d="M-4 -4 L4 4 M4 -4 L-4 4" stroke-width="1.8"/>
+</g>
 <!-- ESP32 chip -->
 <g transform="rotate(-17 1422 126)" filter="url(#chipGlow)">
   <rect x="1284" y="61" width="272" height="126" rx="23" fill="url(#chip)" stroke="#16b9eb" stroke-width="2.5"/>
@@ -44,7 +51,13 @@
     <path d="M1311 61V44 M1340 61V44 M1369 61V44 M1398 61V44 M1427 61V44 M1456 61V44 M1485 61V44 M1514 61V44"/>
     <path d="M1311 187V204 M1340 187V204 M1369 187V204 M1398 187V204 M1427 187V204 M1456 187V204 M1485 187V204 M1514 187V204"/>
   </g>
-  <text x="1420" y="135" text-anchor="middle" fill="#d1efff" font-family="Segoe UI,Arial,sans-serif" font-size="23" font-weight="700" letter-spacing="1.1">ESP32-S3</text>
+  <g fill="none" stroke="#b8ecff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="1398" y="105" width="44" height="42" rx="7" fill="#0c4b76" fill-opacity=".72"/>
+    <path d="M1406 98V105 M1417 98V105 M1428 98V105 M1439 98V105 M1406 147V154 M1417 147V154 M1428 147V154 M1439 147V154"/>
+    <path d="M1391 114H1398 M1391 126H1398 M1391 138H1398 M1442 114H1449 M1442 126H1449 M1442 138H1449"/>
+    <path d="M1410 126H1430 M1420 116V136" stroke="#24dce5" stroke-width="2.8"/>
+    <circle cx="1420" cy="126" r="4.5" fill="#24dce5" stroke="none"/>
+  </g>
 </g>
 <!-- shield emblem -->
 <g transform="translate(1600 36)">
