@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="420" viewBox="0 0 1800 420">
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#06172b"/>
+    <stop offset=".48" stop-color="#06213e"/>
+    <stop offset="1" stop-color="#04172f"/>
+  </linearGradient>
+  <radialGradient id="glow" cx="78%" cy="56%" r="62%">
+    <stop offset="0" stop-color="#075ba0" stop-opacity=".28"/>
+    <stop offset="1" stop-color="#06203d" stop-opacity="0"/>
+  </radialGradient>
+  <linearGradient id="line" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#0867b2" stop-opacity="0"/>
+    <stop offset=".22" stop-color="#087fc8" stop-opacity=".44"/>
+    <stop offset=".68" stop-color="#0c9ff0" stop-opacity=".9"/>
+    <stop offset="1" stop-color="#1499e9" stop-opacity=".78"/>
+  </linearGradient>
+  <filter id="soft" x="-10%" y="-100%" width="120%" height="300%">
+    <feGaussianBlur stdDeviation="2.2"/>
+  </filter>
+</defs>
+<rect width="1800" height="420" fill="url(#bg)"/>
+<rect width="1800" height="420" fill="url(#glow)"/>
+<path d="M560 258 C850 244 1110 235 1800 170" fill="none" stroke="#087fc8" stroke-opacity=".34" stroke-width="5" filter="url(#soft)"/>
+<path d="M560 258 C850 244 1110 235 1800 170" fill="none" stroke="url(#line)" stroke-width="2.3"/>
+<path d="M690 335 C1000 315 1320 300 1800 250" fill="none" stroke="#087fc8" stroke-opacity=".3" stroke-width="5" filter="url(#soft)"/>
+<path d="M690 335 C1000 315 1320 300 1800 250" fill="none" stroke="url(#line)" stroke-width="2.3"/>
+</svg>
